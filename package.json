@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/EdisonZheng2323/Club-House-Message-Board#readme",
   "dependencies": {
+    "@quixo3/prisma-session-store": "^3.1.13",
     "bcryptjs": "^3.0.2",
     "connect-pg-simple": "^10.0.0",
     "dotenv": "^16.4.7",
@@ -26,5 +27,8 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "pg": "^8.14.0"
+  },
+  "devDependencies": {
+    "prisma": "^6.5.0"
   }
 }

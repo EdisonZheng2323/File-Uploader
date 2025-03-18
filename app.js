@@ -2,24 +2,26 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const router = require("./routes/index");
-const pool = require('./db/pool');
+const {PrismaClient} = require('@prisma/client');
 const passport = require('passport');
 const session = require('express-session');
-const pgSession = require('connect-pg-simple')(session);
-const initializeDatabase = require('./db/populatedb');
+const { PrismaSessionStore } = require('@quixo3/prisma-session-store');
 require('dotenv').config();
 require('./db/passport');
 
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({extended: true}));
-initializeDatabase();
 
 app.use(session({
-  store: new pgSession({
-    pool: pool,
-    tableName: 'session'
-  }),
+  store: new PrismaSessionStore(
+    new PrismaClient(),
+    {
+      checkPeriod: 2 * 60 * 1000,
+      dbRecordIdFunction: undefined,
+      dbRecordIdIsSessionIdL: true,
+    }
+  ),
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: false,
